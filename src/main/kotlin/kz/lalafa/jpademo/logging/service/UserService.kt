@@ -5,15 +5,16 @@ import kz.lalafa.jpademo.logging.repository.UserRepository2
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.Instant
+import java.util.*
 
 @Service
 class UserService {
 
     @Autowired
-    lateinit var userRepository: UserRepository2
+    private lateinit var userRepository: UserRepository2
 
     @Autowired
-    lateinit var smsService: SmsService
+    private lateinit var smsService: SmsService
 
     fun getUserByPhone(phone: String) = userRepository.findByPhone(phone)
     fun deleteUser(userInfo: UserInfo) {
@@ -39,6 +40,18 @@ class UserService {
     }
 
     fun register(userInfo: UserInfo) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    fun getUserByToken(token: String): Optional<UserInfo> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    fun invalidateOtp(userInfo: UserInfo) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    fun increaseOtpAttempt(userInfo: UserInfo) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

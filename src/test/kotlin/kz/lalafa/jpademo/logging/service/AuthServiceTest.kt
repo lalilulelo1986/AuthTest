@@ -24,36 +24,36 @@ import java.util.concurrent.TimeUnit
 class AuthServiceTest {
 
     @Autowired
-    lateinit var authService: AuthService
+    lateinit var phoneAuthService: PhoneAuthService
 
     @Test
     fun loginByPhone() {
-        authService.requestLoggingByPhone("4234234")
+        phoneAuthService.requestOtp("4234234")
     }
 }
 
-class Sms{
-    @Test
-    fun sms() {
-        val rt = RestTemplate()
-
-        //while (true) {
-        //for (J in 1..1){
-            val newFixedThreadPool = Executors.newFixedThreadPool(10)
-            newFixedThreadPool.submit {
-                val headers = HttpHeaders()
-                headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
-                val map = LinkedMultiValueMap<String, String>()
-                map.add("st.r.phone", "+77071113146")
-                val req = HttpEntity<MultiValueMap<String, String>>(map, headers)
-                rt.postForEntity("https://ok.ru/dk?cmd=AnonymRecoveryStartPhoneLink&st.cmd=anonymRecoveryStartPhoneLink", req, String::class.java)
-                //println(J)
-            }
-            //if (J % 100 == 0)
-                newFixedThreadPool.awaitTermination(1, TimeUnit.SECONDS)
-        sleep(5L)
-            newFixedThreadPool.shutdown()
-        //}
-        //}
-    }
-}
+//class Sms {
+//    @Test
+//    fun sms() {
+//        val rt = RestTemplate()
+//
+//        //while (true) {
+//        //for (J in 1..1){
+//        val newFixedThreadPool = Executors.newFixedThreadPool(10)
+//        newFixedThreadPool.submit {
+//            val headers = HttpHeaders()
+//            headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
+//            val map = LinkedMultiValueMap<String, String>()
+//            map.add("st.r.phone", "+77071113146")
+//            val req = HttpEntity<MultiValueMap<String, String>>(map, headers)
+//            rt.postForEntity("https://ok.ru/dk?cmd=AnonymRecoveryStartPhoneLink&st.cmd=anonymRecoveryStartPhoneLink", req, String::class.java)
+//            //println(J)
+//        }
+//        //if (J % 100 == 0)
+//        newFixedThreadPool.awaitTermination(1, TimeUnit.SECONDS)
+//        sleep(5L)
+//        newFixedThreadPool.shutdown()
+//        //}
+//        //}
+//    }
+//}
