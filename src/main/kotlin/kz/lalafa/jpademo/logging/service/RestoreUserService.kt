@@ -20,7 +20,7 @@ class RestoreUserService : OtpInterface {
                 .orElseThrow { throw Exception("User not found") }
         if (!userService.isRegistered(user))
             throw Exception("User with this phone not registered")
-        if (userService.isOtpActual(user, 5, 300))
+        if (userService.isOtpActual(user))
             throw Exception("Waiting for SMS")
 
         val otp = smsService.sendOtp(phone)
@@ -35,7 +35,7 @@ class RestoreUserService : OtpInterface {
         if (!userService.isRegistered(user))
             throw Exception("User not registered")
 
-        if (userService.isOtpActual(user, 5, 300) && otp == user.otp && token == user.token) {
+        if (userService.isOtpActual(user) && otp == user.otp && token == user.token) {
             userService.invalidateOtp(user)
             TODO() //redirect to restore page
         } else {

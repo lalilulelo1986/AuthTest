@@ -20,7 +20,7 @@ class PhoneAuthService : OtpInterface {
         user.ifPresent {
             if (userService.isRegistered(it))
                 throw Exception("User already registered")
-            if (userService.isOtpActual(it, 5, 300))
+            if (userService.isOtpActual(it))
                 throw Exception("Waiting for SMS")
         }
 
@@ -36,7 +36,7 @@ class PhoneAuthService : OtpInterface {
         if (userService.isRegistered(user))
             throw Exception("user already registered. Restore your password.")
 
-        if (userService.isOtpActual(user, 5, 300) && otp == user.otp && token == user.token) {
+        if (userService.isOtpActual(user) && otp == user.otp && token == user.token) {
             userService.invalidateOtp(user)
             TODO() //redirect to login page
         } else {

@@ -25,10 +25,10 @@ class UserService {
 
     fun isRegistered(userInfo: UserInfo) = userInfo.login != null
 
-    fun isOtpActual(userInfo: UserInfo, attemptsAllowed: Byte, durationAllowed: Long): Boolean {
+    fun isOtpActual(userInfo: UserInfo): Boolean {
         return userInfo.activeOtp
-                && userInfo.verifyCounter < attemptsAllowed
-                && userInfo.createdDateTime.plusSeconds(durationAllowed) < Instant.now()
+                && userInfo.verifyCounter < 5
+                && userInfo.createdDateTime.plusSeconds(300) < Instant.now()
     }
 
     fun updateOtp(phone: String, otp: String) {
