@@ -1,14 +1,12 @@
 package kz.lalafa.jpademo.logging.service
 
 import kz.lalafa.jpademo.logging.UserInfo
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class AuthService {
-
-    @Autowired
-    private lateinit var userService: UserService
+class AuthService(
+        private val userService: UserService
+) {
 
     fun login(login: String, password: String) {
 

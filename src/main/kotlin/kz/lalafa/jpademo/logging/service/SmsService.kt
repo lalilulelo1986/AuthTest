@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class SmsService {
-    fun sendOtp(phone: String): String {
+    fun sendOtp(phone: String, otp: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

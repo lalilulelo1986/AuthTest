@@ -2,7 +2,6 @@ package kz.lalafa.jpademo.logging.service
 
 import kz.lalafa.jpademo.logging.UserInfo
 import kz.lalafa.jpademo.logging.repository.UserRepository2
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.stereotype.Service
 import java.time.Instant
@@ -10,10 +9,9 @@ import javax.transaction.Transactional
 
 @Service
 @Transactional
-class UserService {
-
-    @Autowired
-    private lateinit var userRepository: UserRepository2
+class UserService(
+        private val userRepository: UserRepository2
+) {
 
     fun getUserByPhone(phone: String) = userRepository.findByPhone(phone)
 
@@ -26,7 +24,7 @@ class UserService {
     fun isRegistered(userInfo: UserInfo) = userInfo.login != null
 
     fun isOtpActual(userInfo: UserInfo): Boolean {
-        return userInfo.activeOtp
+        return userInfo.isActiveOtp
                 && userInfo.verifyCounter < 5
                 && userInfo.createdDateTime.plusSeconds(300) < Instant.now()
     }
@@ -38,10 +36,10 @@ class UserService {
                     it.token = token
                     it.createdDateTime = Instant.now()
                     it.verifyCounter = 0
-                    it.activeOtp = true
+                    it.isActiveOtp = true
                 }
                 ?: UserInfo(phone = phone, token = token, otp = otp,
-                        activeOtp = true, verifyCounter = 0, createdDateTime = Instant.now())
+                        isActiveOtp = true, verifyCounter = 0, createdDateTime = Instant.now())
 
         userRepository.save(user)
     }
@@ -57,7 +55,7 @@ class UserService {
     @Modifying
     fun invalidateOtp(userInfo: UserInfo) {
         userRepository.findByPhone(userInfo.phone)?.apply {
-            activeOtp = false
+            isActiveOtp = false
         } ?: throw Exception("No such user")
     }
 
