@@ -33,7 +33,10 @@ class PhoneAuthService : OtpInterface {
         val user = userService.getUserByToken(token)
                 .orElseThrow { throw IllegalArgumentException("Can't login. No such token") }
 
-        if (!userService.isRegistered(user) && otp == user.otp && token == user.token) {
+        if (userService.isRegistered(user))
+            throw Exception("user already registered. Restore your password.")
+
+        if (userService.isOtpActual(user, 5, 300) && otp == user.otp && token == user.token) {
             userService.invalidateOtp(user)
             TODO() //redirect to login page
         } else {
