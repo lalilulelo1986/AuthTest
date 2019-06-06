@@ -44,7 +44,7 @@ class UserService(
         userRepository.save(user)
     }
 
-    fun register(userInfo: UserInfo) {
+    fun register(userInfo: UserInfo): UserInfo {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

@@ -1,5 +1,6 @@
 package kz.lalafa.jpademo.logging.service
 
+import kz.lalafa.jpademo.logging.AuthenticationResponse
 import kz.lalafa.jpademo.logging.UserInfo
 import org.springframework.stereotype.Service
 
@@ -8,7 +9,7 @@ class AuthService(
         private val userService: UserService
 ) {
 
-    fun login(login: String, password: String) {
+    fun login(login: String, password: String): AuthenticationResponse {
 
         val user = userService.getUserByLogin(login)
                 .orElseThrow { throw Exception("User does not exist") }
@@ -19,7 +20,7 @@ class AuthService(
         throw IllegalArgumentException("Login or password invalid")
     }
 
-    fun register(loggedUserLogin: String, userInfo: UserInfo) {
+    fun register(loggedUserLogin: String, userInfo: UserInfo): UserInfo {
 
         val user = userService.getUserByPhone(userInfo.phone)
                 ?: throw Exception("User not found")
@@ -29,6 +30,6 @@ class AuthService(
         if (userService.isRegistered(user))
             throw Exception("Already registered")
 
-        userService.register(userInfo)
+        return userService.register(userInfo)
     }
 }
