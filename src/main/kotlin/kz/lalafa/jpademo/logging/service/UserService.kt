@@ -42,8 +42,8 @@ class UserService {
                 }
                 ?: UserInfo(phone = phone, token = token, otp = otp,
                         activeOtp = true, verifyCounter = 0, createdDateTime = Instant.now())
+
         userRepository.save(user)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     fun register(userInfo: UserInfo) {
@@ -56,13 +56,15 @@ class UserService {
 
     @Modifying
     fun invalidateOtp(userInfo: UserInfo) {
-        userRepository.findByPhone(userInfo.phone)?.let {
-            it.activeOtp = false
+        userRepository.findByPhone(userInfo.phone)?.apply {
+            activeOtp = false
         } ?: throw Exception("No such user")
     }
 
+    @Modifying
     fun increaseOtpAttempt(userInfo: UserInfo) {
-        //userInfo.verifyCounter ++
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        userRepository.findByPhone(userInfo.phone)?.apply {
+            verifyCounter++
+        } ?: throw Exception("No such user")
     }
 }
