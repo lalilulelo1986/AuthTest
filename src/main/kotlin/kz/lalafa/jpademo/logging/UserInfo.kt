@@ -11,9 +11,9 @@ data class UserInfo(
         val phone: String,
         val login: String? = null,
         var password: String? = null,
+        var smsCode: String,
         var token: String,
-        var otp: String,
-        var isActiveOtp: Boolean,
+        var isActiveToken: Boolean,
         var verifyCounter: Byte,
         var createdDateTime: Instant
 )

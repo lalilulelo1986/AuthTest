@@ -2,6 +2,7 @@ package kz.lalafa.jpademo.logging.service
 
 import kz.lalafa.jpademo.logging.AuthenticationResponse
 import org.springframework.stereotype.Service
+import java.time.Duration
 
 @Service
 class PhoneAuthService(
@@ -10,7 +11,7 @@ class PhoneAuthService(
         private val otpTokenService: OtpTokenService
 ) : PhoneAuthServiceInterface {
 
-    override fun requestOtp(phone: String): String {
+    override fun requestOtp(phone: String): OtpDto {
 
         userService.getUserByPhone(phone)?.let {
             if (userService.isRegistered(it))
@@ -19,10 +20,10 @@ class PhoneAuthService(
                 throw Exception("Waiting for SMS")
         }
 
-        val (otp, token) = otpTokenService.generateOtp()
-        smsService.sendOtp(phone, otp)
-        userService.assignOtp(phone, otp, token)
-        return token
+        val otp = otpTokenService.generateOtp()
+        smsService.sendOtp(phone, otp.smsCode)
+        userService.assignOtp(phone, otp.smsCode, otp.token)
+        return otp.copy(smsCode = "")
     }
 
     override fun validateOtp(otp: String, token: String): AuthenticationResponse {
@@ -33,19 +34,19 @@ class PhoneAuthService(
         if (userService.isRegistered(user))
             throw Exception("user already registered. Restore your password.")
 
-        if (userService.isOtpActual(user) && otp == user.otp && token == user.token) {
+        if (userService.isOtpActual(user) && otp == user.smsCode && token == user.token) {
             userService.invalidateOtp(user)
             return AuthenticationResponse("", "", emptyList())
         } else {
             userService.increaseOtpAttempt(user)
-            throw Exception("Not valid otp or token")
+            throw Exception("Not valid smsCode or token")
         }
     }
 }
 
 interface PhoneAuthServiceInterface {
 
-    fun requestOtp(phone: String): String
+    fun requestOtp(phone: String): OtpDto
 
     fun validateOtp(otp: String, token: String): AuthenticationResponse
 }

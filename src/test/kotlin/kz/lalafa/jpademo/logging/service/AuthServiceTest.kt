@@ -26,10 +26,10 @@ class AuthServiceTest {
     @Autowired
     lateinit var phoneAuthService: PhoneAuthService
 
-    @Test
-    fun loginByPhone() {
-        phoneAuthService.requestOtp("4234234")
-    }
+//    @Test
+//    fun loginByPhone() {
+//        phoneAuthService.requestOtp("4234234")
+//    }
 }
 
 //class Sms {

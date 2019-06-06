@@ -1,16 +1,19 @@
 package kz.lalafa.jpademo.logging.service
 
 import org.springframework.stereotype.Service
+import java.time.Duration
+import java.util.UUID
 
 @Service
 class OtpTokenService {
 
-    fun generateOtp(): OtpToken {
-        TODO()
+    fun generateOtp(): OtpDto {
+        return OtpDto("1231", UUID.randomUUID().toString(), Duration.ofSeconds(300))
     }
 }
 
-data class OtpToken(
-        val otp: String,
-        val token: String
+data class OtpDto(
+        val smsCode: String,
+        val token: String,
+        val duration: Duration
 )

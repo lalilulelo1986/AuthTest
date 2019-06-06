@@ -24,22 +24,22 @@ class UserService(
     fun isRegistered(userInfo: UserInfo) = userInfo.login != null
 
     fun isOtpActual(userInfo: UserInfo): Boolean {
-        return userInfo.isActiveOtp
+        return userInfo.isActiveToken
                 && userInfo.verifyCounter < 5
                 && userInfo.createdDateTime.plusSeconds(300) < Instant.now()
     }
 
-    fun assignOtp(phone: String, otp: String, token: String) {
+    fun assignOtp(phone: String, smsCode: String, token: String) {
         val user = userRepository.findByPhone(phone)
                 ?.also {
-                    it.otp = otp
+                    it.smsCode = smsCode
                     it.token = token
                     it.createdDateTime = Instant.now()
                     it.verifyCounter = 0
-                    it.isActiveOtp = true
+                    it.isActiveToken = true
                 }
-                ?: UserInfo(phone = phone, token = token, otp = otp,
-                        isActiveOtp = true, verifyCounter = 0, createdDateTime = Instant.now())
+                ?: UserInfo(phone = phone, token = token, smsCode = smsCode,
+                        isActiveToken = true, verifyCounter = 0, createdDateTime = Instant.now())
 
         userRepository.save(user)
     }
@@ -55,7 +55,7 @@ class UserService(
     @Modifying
     fun invalidateOtp(userInfo: UserInfo) {
         userRepository.findByPhone(userInfo.phone)?.apply {
-            isActiveOtp = false
+            isActiveToken = false
         } ?: throw Exception("No such user")
     }
 
