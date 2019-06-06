@@ -25,7 +25,7 @@ class PhoneAuthService : OtpInterface {
         }
 
         val otp = smsService.sendOtp(phone)
-        userService.updateOtp(phone, otp)
+        userService.updateOtp(phone, otp, "token")
     }
 
     override fun validateOtp(otp: String, token: String) {

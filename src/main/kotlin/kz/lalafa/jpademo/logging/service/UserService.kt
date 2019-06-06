@@ -31,11 +31,12 @@ class UserService {
                 && userInfo.createdDateTime.plusSeconds(300) < Instant.now()
     }
 
-    fun updateOtp(phone: String, otp: String) {
-        val findByPhone = userRepository.findByPhone(phone).get()
-        findByPhone.createdDateTime
-        findByPhone.activeOtp
-        findByPhone.otp
+    fun updateOtp(phone: String, otp: String, token: String) {
+        val user = userRepository.findByPhone(phone).get()
+        user.createdDateTime
+        user.activeOtp
+        user.otp
+        user.token
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -48,10 +49,12 @@ class UserService {
     }
 
     fun invalidateOtp(userInfo: UserInfo) {
+        //userInfo.activeOtp = false
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     fun increaseOtpAttempt(userInfo: UserInfo) {
+        //userInfo.verifyCounter ++
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
