@@ -6,7 +6,7 @@ import java.lang.Exception
 import java.lang.IllegalArgumentException
 
 @Service
-class PhoneAuthService {
+class PhoneAuthService : OtpInterface {
 
     @Autowired
     private lateinit var userService: UserService
@@ -14,7 +14,7 @@ class PhoneAuthService {
     @Autowired
     private lateinit var smsService: SmsService
 
-    fun requestOtp(phone: String) {
+    override fun requestOtp(phone: String) {
 
         val user = userService.getUserByPhone(phone)
         user.ifPresent {
@@ -28,7 +28,7 @@ class PhoneAuthService {
         userService.updateOtp(phone, otp)
     }
 
-    fun validateOtp(otp: String, token: String) {
+    override fun validateOtp(otp: String, token: String) {
 
         val user = userService.getUserByToken(token)
                 .orElseThrow { throw IllegalArgumentException("Can't login. No such token") }

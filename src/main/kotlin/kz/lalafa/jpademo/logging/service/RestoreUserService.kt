@@ -6,7 +6,7 @@ import java.lang.Exception
 import java.lang.IllegalArgumentException
 
 @Service
-class RestoreUserService {
+class RestoreUserService : OtpInterface {
 
     @Autowired
     private lateinit var userService: UserService
@@ -14,7 +14,7 @@ class RestoreUserService {
     @Autowired
     private lateinit var smsService: SmsService
 
-    fun requestOtp(phone: String) {
+    override fun requestOtp(phone: String) {
 
         val user = userService.getUserByPhone(phone)
                 .orElseThrow { throw Exception("User not found") }
@@ -27,7 +27,7 @@ class RestoreUserService {
         userService.updateOtp(phone, otp)
     }
 
-    fun validateOtp(otp: String, token: String) {
+    override fun validateOtp(otp: String, token: String) {
 
         val user = userService.getUserByToken(token)
                 .orElseThrow { throw IllegalArgumentException("Can't restore. No such token") }

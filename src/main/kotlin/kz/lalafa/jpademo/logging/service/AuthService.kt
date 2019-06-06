@@ -26,6 +26,18 @@ class AuthService {
         throw IllegalArgumentException("Login or password invalid")
     }
 
+    fun registerLoggedUser(loggedUserLogin: String, userInfo: UserInfo) {
+
+        val user = userService.getUserByPhone(userInfo.phone)
+                .orElseThrow { throw Exception("User not found") }
+        if (user.login != loggedUserLogin)
+            throw IllegalArgumentException("Not valid user")
+        if (userService.isRegistered(user))
+            throw Exception("Already registered")
+
+        userService.register(userInfo)
+    }
+
 //    fun requestLoggingByPhone(phone: String) {
 //
 //        val user = userService.getUserByPhone(phone)
@@ -53,17 +65,7 @@ class AuthService {
 //        userService.updateOtp(phone, otp)
 //    }
 
-    fun registerLoggedUser(loggedUserLogin: String, userInfo: UserInfo) {
 
-        val user = userService.getUserByPhone(userInfo.phone)
-                .orElseThrow { throw Exception("User not found") }
-        if (user.login != loggedUserLogin)
-            throw IllegalArgumentException("Not valid user")
-        if (userService.isRegistered(user))
-            throw Exception("Already registered")
-
-        userService.register(userInfo)
-    }
 //
 //    fun validateRestoreOtp(otp: String, token: String) {
 //
