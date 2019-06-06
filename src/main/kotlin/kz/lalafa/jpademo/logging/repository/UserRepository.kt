@@ -1,19 +1,18 @@
 package kz.lalafa.jpademo.logging.repository
 
 import kz.lalafa.jpademo.logging.UserInfo
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.Optional
+import java.util.UUID
 
-@Service
-class UserRepository2 {
+@Repository
+interface UserRepository2 : JpaRepository<UserInfo, UUID> {
 
-    fun findByPhone(phone: String): Optional<UserInfo> {
+    fun findByPhone(phone: String): UserInfo? {
         //return Optional.of(UserInfo("mail@sdf.ru", "343435252", "login", "pass", true))
-        return Optional.empty()
-    }
-
-    fun delete(id: UUID) {
-        TODO()
+        return null
     }
 
     fun findByLogin(login: String): Optional<UserInfo> {
